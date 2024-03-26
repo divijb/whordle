@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {type ReactNode} from 'react';
 import styled from 'styled-components';
 
 const StyledFormElement = styled.div`
@@ -14,8 +14,7 @@ const StyledFormElement = styled.div`
   }
 `;
 
-// @ts-ignore
-const FormElement = ({ label, children }: any) => (
+const FormElement = ({ label, children }: {label: string | ReactNode, children: ReactNode}) => (
   <StyledFormElement>
     <div className="form-label"> {label} </div>
     <div className="form-field"> {children} </div>
