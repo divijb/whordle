@@ -36,6 +36,10 @@ const StyledActions = styled.div`
   }
 `;
 
+const StyledWordsContainer = styled.div`
+padding: 40px;
+`;
+
 type TFormFields = {
   excludedLetters?: string;
   includeLetters?: string;
@@ -85,17 +89,19 @@ const WordleForm = () => {
       });
     };
 
-    const filterWithLettersNotInExactSpace = ({ dict, letters }: IWordFilters): string[] => {
+    const filterWithLettersNotInExactSpace = ({ dict, letters: lettersList }: IWordFilters): string[] => {
 
-      if (!letters?.length) {
+      if (!lettersList?.length) {
         return dict;
       }
 
       return dict.filter(w => {
         const allMatch: boolean[] = [];
-        letters.forEach((letter, index) => {
-          if (!!letter) {
-            allMatch[index] = w[index] === letter;
+        lettersList.forEach((letters, index) => {
+          if (!!letters?.length) {
+            // barby
+            // a,r
+            allMatch[index] = letters.includes(w[index]);
           }
         });
 
@@ -198,14 +204,14 @@ const WordleForm = () => {
           </StyledActions>
         </Form.Item>
       </StyledForm>
-      <div>
+      <StyledWordsContainer>
         <h2>Possible words ({filteredWords.length} words)</h2>
         <div>
           {
             filteredWords.join(', ')
           }
         </div>
-      </div>
+      </StyledWordsContainer>
     </>
   );
 };
