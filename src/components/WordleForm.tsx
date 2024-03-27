@@ -18,7 +18,7 @@ const StyledLetterInputContainer = styled.div`
 `;
 
 const StyledLetterInput = styled(Input)`
-  width: 32px;
+  width: 40px;
   margin-right: 5px;
 `;
 
@@ -63,11 +63,13 @@ interface IWordFilters {
 const WordleForm = () => {
   const [form] = Form.useForm();
   const [filteredWords, setFilteredWords] = useState<string[]>([]);
+
+  const convertValuesToLowerCase = (stringArray: (string | undefined)[] | undefined): ((string | undefined)[] | undefined) => stringArray?.map(i => i?.toLowerCase());
   const handleSearch: FormProps<TFormFields>["onFinish"] = (values: TFormFields) => {
-    const includedLetters = values?.includeLetters?.split('');
-    const excludedLetters = values?.excludedLetters?.split('');
-    const exactWord = [values.patternLetter1, values.patternLetter2, values.patternLetter3, values.patternLetter4, values.patternLetter5];
-    const antiWord = [values.antiPatternLetter1, values.antiPatternLetter2, values.antiPatternLetter3, values.antiPatternLetter4, values.antiPatternLetter5];
+    const includedLetters = convertValuesToLowerCase(values?.includeLetters?.split(''));
+    const excludedLetters = convertValuesToLowerCase(values?.excludedLetters?.split(''));
+    const exactWord = convertValuesToLowerCase([values.patternLetter1, values.patternLetter2, values.patternLetter3, values.patternLetter4, values.patternLetter5]);
+    const antiWord = convertValuesToLowerCase([values.antiPatternLetter1, values.antiPatternLetter2, values.antiPatternLetter3, values.antiPatternLetter4, values.antiPatternLetter5]);
 
     let predictions = [...dictionary];
 
@@ -141,12 +143,12 @@ const WordleForm = () => {
     <>
       <StyledForm form={form} name="Wordle Help" onFinish={(fields) => handleSearch(fields as TFormFields)}>
         <FormElement label="Included Letters">
-          <Form.Item name="includeLetters" initialValue="abc">
+          <Form.Item name="includeLetters">
             <Input placeholder="Letters in the word" maxLength={25} />
           </Form.Item>
         </FormElement>
         <FormElement label="Excluded Letters">
-          <Form.Item name="excludedLetters" initialValue="def">
+          <Form.Item name="excludedLetters">
             <Input placeholder="Letters not in the word" maxLength={25} />
           </Form.Item>
         </FormElement>
